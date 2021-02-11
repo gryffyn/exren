@@ -21,7 +21,13 @@ type walker struct {
 	Tags Tags
 }
 
-func (e *Exif) Open(path string) {
+func NewExif(path string) *Exif {
+	e := new(Exif)
+	e.open(path)
+	return e
+}
+
+func (e *Exif) open(path string) {
 	f, err := os.Open(path)
 	defer f.Close()
 	if err != nil {

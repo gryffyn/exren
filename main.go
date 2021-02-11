@@ -10,8 +10,7 @@ import (
 func main() {
 	format := `%DateTimeOriginal%-gryffyn.jpg`
 	path := "test.jpg"
-	exifData := parser.Exif{}
-	exifData.Open(path)
+	exifData := parser.NewExif(path)
 	_ = exifData.Parse()
 	err := os.Rename(path, parser.ParseFormat(format, exifData.Tags))
 	if err != nil {
@@ -19,4 +18,4 @@ func main() {
 	}
 }
 
-// gfn-fRen -n '%DateTimeOriginal%-gryffyn.jpg' test.jpg
+// gfn-fRen -f '%DateTimeOriginal%-gryffyn.jpg' test.jpg
