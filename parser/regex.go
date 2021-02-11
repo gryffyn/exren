@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -9,9 +8,8 @@ import (
 	"github.com/rwcarlsen/goexif/tiff"
 )
 
-// gfn-fRen -f '%DateTimeOriginal%-gryffyn.jpg' test.jpg
-
-var validFields = []string{"ImageWidth", "ImageLength", "BitsPerSample", "Compression", "PhotometricInterpretation",
+// Valid EXIF fields
+var ValidFields = []string{"ImageWidth", "ImageLength", "BitsPerSample", "Compression", "PhotometricInterpretation",
 	"Orientation", "SamplesPerPixel", "PlanarConfiguration", "YCbCrSubSampling", "YCbCrPositioning", "XResolution",
 	"YResolution", "ResolutionUnit", "DateTime", "ImageDescription", "Make", "Model", "Software", "Artist",
 	"Copyright", "ExifIFDPointer", "GPSInfoIFDPointer", "InteroperabilityIFDPointer", "ExifVersion", "FlashpixVersion",
@@ -36,27 +34,21 @@ func contains(arr []string, str string) bool {
 	return false
 }
 
-func parseDate(t *tiff.Tag) string {
-	inLay := "2006:01:02 15:04:05"
-	outLay := "2006-01-02"
-	n, _ := time.Parse(inLay, t.String())
+func parseDate(str string) string {
+	inLay := `2006:01:02 15:04:05`
+	outLay := `2006-01-02`
+	n, _ := time.Parse(inLay, str)
 	return n.Format(outLay)
 }
 
-func getTagValue(t *tiff.Tag) string {
-	v, e := t.StringVal()
-	if e != nil {
-		log.Println(e)
-	}
-	return v
-}
-
 func sanitizeString(fieldname string, t *tiff.Tag) string {
-	val := getTagValue(t)
-	println(val)
+	val := t.String()
 	if contains(dateFields, fieldname) {
-		return parseDate(t)
+		return parseDate(val)
 	}
+	val = strings.TrimSuffix(val, `"`)
+	val = strings.TrimPrefix(val, `"`)
+	val = strings.ReplaceAll(val, ` `, `_`)
 	return val
 }
 
