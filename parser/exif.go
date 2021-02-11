@@ -23,15 +23,15 @@ type walker struct {
 
 func NewExif(path string) *Exif {
 	e := new(Exif)
+	e.Tags = make(Tags)
 	e.open(path)
 	return e
 }
 
 func (e *Exif) open(path string) {
 	f, err := os.Open(path)
-	defer f.Close()
 	if err != nil {
-		log.Print(err)
+		log.Fatal(err)
 	}
 	e.File = f
 }
@@ -47,8 +47,8 @@ func (e *Exif) Parse() error {
 	var x *goexif.Exif
 	var err error
 	x, err = goexif.Decode(e.File)
-	walker := &walker{ed: x, Tags: make(Tags)}
-	err = x.Walk(walker)
+	walker := walker{ed: x, Tags: Tags{}}
+	err = x.Walk(&walker)
 	e.Tags = walker.Tags
 	return err
 }

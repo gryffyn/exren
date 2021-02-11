@@ -12,6 +12,7 @@ func main() {
 	path := "test.jpg"
 	exifData := parser.NewExif(path)
 	_ = exifData.Parse()
+	println(exifData.Tags["DateTimeOriginal"])
 	err := os.Rename(path, parser.ParseFormat(format, exifData.Tags))
 	if err != nil {
 		log.Fatal(err)

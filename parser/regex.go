@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -43,11 +44,16 @@ func parseDate(t *tiff.Tag) string {
 }
 
 func getTagValue(t *tiff.Tag) string {
-	return t.String()
+	v, e := t.StringVal()
+	if e != nil {
+		log.Println(e)
+	}
+	return v
 }
 
 func sanitizeString(fieldname string, t *tiff.Tag) string {
 	val := getTagValue(t)
+	println(val)
 	if contains(dateFields, fieldname) {
 		return parseDate(t)
 	}
