@@ -1,4 +1,4 @@
-module git.neveris.one/gryffyn/gfn-fRen
+module git.neveris.one/gryffyn/exren
 
 go 1.15
 

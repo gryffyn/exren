@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"git.neveris.one/gryffyn/gfn-fRen/parser"
+	"git.neveris.one/gryffyn/exren/parser"
 )
 
 func main() {

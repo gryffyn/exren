@@ -1,8 +1,6 @@
-# gfn-fRen
+# exren
 
----
-
-a very very broken (currently) EXIF renamer.
+The EXif RENamer. Renames image files based on EXIF tags and a format string.
 
 Copyright 2021 gryffyn, see LICENSE for details.  
 EXIF parsing library copyright [rwcarlsen](https://github.com/rwcarlsen).
