@@ -44,7 +44,10 @@ func parseDate(str string) string {
 }
 
 func hash(t Tags) string {
-	in := t["ApertureValue"].String() + t["ShutterSpeedValue"].String() + t["SubSecTimeOriginal"].String() + t["FNumber"].String()
+	var in string
+	for _, n := range t {
+		in = in + n.String()
+	}
 	h := md5.New()
 	h.Write([]byte(in))
 	return hex.EncodeToString(h.Sum(nil))[0:7]
