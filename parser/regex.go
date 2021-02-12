@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"regexp"
 	"strings"
 	"time"
@@ -35,20 +37,32 @@ func contains(arr []string, str string) bool {
 }
 
 func parseDate(str string) string {
-	inLay := `2006:01:02 15:04:05`
+	inLay := `"2006:01:02 15:04:05"`
 	outLay := `2006-01-02`
 	n, _ := time.Parse(inLay, str)
 	return n.Format(outLay)
 }
 
-func sanitizeString(fieldname string, t *tiff.Tag) string {
+func hash(t Tags) string {
+	in := t["ApertureValue"].String() + t["ShutterSpeedValue"].String() + t["SubSecTimeOriginal"].String() + t["FNumber"].String()
+	h := md5.New()
+	h.Write([]byte(in))
+	return hex.EncodeToString(h.Sum(nil))[0:7]
+}
+
+func getValue(fieldname string, t *tiff.Tag) string {
 	val := t.String()
 	if contains(dateFields, fieldname) {
 		return parseDate(val)
 	}
+	return val
+}
+
+func sanitizeString(val string) string {
 	val = strings.TrimSuffix(val, `"`)
 	val = strings.TrimPrefix(val, `"`)
 	val = strings.ReplaceAll(val, ` `, `_`)
+	val = strings.ReplaceAll(val, `/`, `_`)
 	return val
 }
 
@@ -57,7 +71,10 @@ func ParseFormat(str string, t Tags) string {
 	p := r.ReplaceAllStringFunc(str,
 		func(s string) string {
 			raw := strings.Replace(s, "%", "", 2)
-			return sanitizeString(raw, t[raw])
+			if raw == "Hash" {
+				return sanitizeString(hash(t))
+			}
+			return sanitizeString(getValue(raw, t[raw]))
 		})
 	return p
 }
