@@ -16,7 +16,7 @@ USAGE:
    exren [global options] command [command options] [arguments...]
 
 VERSION:
-   0.1.0
+   v0.1.3
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
@@ -26,7 +26,9 @@ GLOBAL OPTIONS:
    --help, -h                show help (default: false)
    --version, -v             print the version (default: false)
 
-```
+```  
+
+The format string takes exif tags in the format `%TagName%`.
 
 ## Screenshot
 

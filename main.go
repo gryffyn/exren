@@ -15,7 +15,7 @@ func Run() {
 
 	app := &cli.App{
 		Name:    "exren",
-		Version: "0.1.0",
+		Version: "v0.1.3",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:        "format",
