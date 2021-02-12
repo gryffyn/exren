@@ -88,7 +88,7 @@ func ParseFormat(str string, t Tags) string {
 			if raw == "Hash" {
 				return sanitizeString(hash(t))
 			}
-			return sanitizeString(getValue(raw, t[raw]))
+			return sanitizeString(parseNewTags(raw, t))
 		})
 	return p
 }
