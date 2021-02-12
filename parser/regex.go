@@ -3,6 +3,7 @@ package parser
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -36,6 +37,13 @@ func contains(arr []string, str string) bool {
 	return false
 }
 
+func containsTag(t Tags, str string) bool {
+	if _, ok := t[str]; ok {
+		return true
+	}
+	return false
+}
+
 func parseDate(str string) string {
 	inLay := `"2006:01:02 15:04:05"`
 	outLay := `2006-01-02`
@@ -50,7 +58,7 @@ func hash(t Tags) string {
 	}
 	h := md5.New()
 	h.Write([]byte(in))
-	return hex.EncodeToString(h.Sum(nil))[0:7]
+	return hex.EncodeToString(h.Sum(nil))[0:8]
 }
 
 func getValue(fieldname string, t *tiff.Tag) string {
@@ -74,6 +82,9 @@ func ParseFormat(str string, t Tags) string {
 	p := r.ReplaceAllStringFunc(str,
 		func(s string) string {
 			raw := strings.Replace(s, "%", "", 2)
+			if !containsTag(t, raw) {
+				log.Fatal("Tag '" + raw + "' not present in file EXIF data.")
+			}
 			if raw == "Hash" {
 				return sanitizeString(hash(t))
 			}
