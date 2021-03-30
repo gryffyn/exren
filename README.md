@@ -48,6 +48,12 @@ var ValidFields = []string{"ImageWidth", "ImageLength", "BitsPerSample", "Compre
 	"SubjectDistanceRange"}
 ```
 
+### Valid new tags
+
+```
+var newtags = []string{"ER_Make", "ER_Model", "ER_Hash"}
+```
+
 Not every file will have all of these fields. You'll probably want to check what exif fields are available with a tool like [`exiftool`](https://exiftool.org/) or [`exif-read-tool`](https://github.com/dsoprea/go-exif#reader-tool).
 
 ## Screenshot
