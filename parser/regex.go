@@ -82,10 +82,9 @@ func ParseFormat(str string, t Tags) string {
 	p := r.ReplaceAllStringFunc(str,
 		func(s string) string {
 			raw := strings.Replace(s, "%", "", 2)
-			if !containsTag(t, raw) {
+			if !containsTag(t, raw) && !contains(newtags, raw) {
 				log.Fatal("Tag '" + raw + "' not present in file EXIF data.")
-			}
-			if raw == "Hash" {
+			} else if raw == "Hash" {
 				return sanitizeString(hash(t))
 			}
 			return sanitizeString(parseNewTags(raw, t))
