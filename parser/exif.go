@@ -45,6 +45,7 @@ func (w *walker) Walk(name goexif.FieldName, tag *tiff.Tag) error {
 // Extracts the exif data from the file, then parses it into tags.
 func (e *Exif) Parse() error {
 	x, err := goexif.Decode(e.File)
+	if err != nil {return err}
 	walker := walker{ed: x, Tags: Tags{}}
 	err = x.Walk(&walker)
 	e.Tags = walker.Tags
