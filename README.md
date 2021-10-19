@@ -1,4 +1,5 @@
 # exren
+[![Build Status](https://ci.neveris.one/api/badges/gryffyn/exren/status.svg?ref=refs/heads/main)](https://ci.neveris.one/gryffyn/exren)
 
 The EXif RENamer. Renames image files based on EXIF tags and a format string.
 
